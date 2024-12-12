@@ -8,6 +8,7 @@ const multer = require("multer");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const nodemailer = require("nodemailer");
 const User = require("./models/User.js");
 const Place = require("./models/Place.js");
 const Booking = require('./models/Booking.js');
@@ -84,7 +85,26 @@ app.post(
       const profilePicPath = req.file
         ? `/uploads/profile_pics/${req.file.filename}`
         : null;
-
+      const transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: 465,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL_USERNAME,
+          pass: process.env.EMAIL_PASSWORD,
+        },
+      });
+      const token = "6deufefbgur";
+      const content = `Dear ${name}, Click here to <a href="http://localhost:3030/verify/${token}">Verify Email</a>`;
+      const resetLink = {
+        from: '"EasyStay❤️" <vishnukothakapu467@gmail.com',
+        to: email,
+        subject: "EasyStay Email Verification",
+        text: "Verify your email address",
+        html: content,
+      };
+      await transporter.sendMail(resetLink);
+      console.log("Mail sent successfully");
       const userData = await User.create({
         name,
         email,

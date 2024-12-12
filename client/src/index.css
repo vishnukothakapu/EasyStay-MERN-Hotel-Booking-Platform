@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+input[type='tel'] {
+    @apply w-full border my-2 py-2 px-3 rounded-md ;
+    padding-left: 35px;
+}
+textarea {
+     @apply w-full border my-2 py-2 px-3 rounded-md;
+     height:130px;
+}
+input[type='number']::-webkit-inner-spin-button,input[type='number']::-webkit-outer-spin-button {
+    display: none;
+}
+button {
+    @apply bg-gray-300 cursor-pointer;
+}
+button.primary {
+    background-color: #f5385D;
+    @apply bg-primary p-2 w-full rounded-md text-white;
+}

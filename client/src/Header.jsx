@@ -1,7 +1,7 @@
 import { useContext} from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
-import { Navigation2} from "lucide-react";
+import { Navigation2,MapPinHouse} from "lucide-react";
 import { toast } from "react-toastify";
 import axios from "axios"; // Import Axios
 
@@ -14,10 +14,10 @@ const Header = () => {
 
   return (
     <div>
-      <header className="flex justify-between">
-        <Link to={"/"} className="logo flex items-center gap-1">
-          <Navigation2 className="w-7 h-7 fill-[#f5385D] stroke-[#f5385D]" />
-          <span className="font-bold text-xl">airbnb</span>
+      <header className="flex justify-between items-center">
+        <Link to={"/"} className="logo flex items-center gap-1.5">
+          <MapPinHouse className="w-7 h-7 stroke-[#f5385D]" />
+          <span className="font-semibold text-xl">EasyStay</span>
         </Link>
         
         <Link

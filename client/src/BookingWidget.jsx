@@ -16,7 +16,7 @@ export default function BookingWidget({ place }) {
   const [loading, setLoading] = useState(false);
   const [redirect, setRedirect] = useState("");
   const { user } = useContext(UserContext);
-
+  const today = new Date().toISOString().split("T")[0];
   let numberOfNights = 0;
 
   useEffect(() => {
@@ -92,7 +92,10 @@ export default function BookingWidget({ place }) {
     img.onload = () => {
       doc.setFontSize(24);
       doc.setFont("helvetica", "bold");
-      doc.text("Booking Confirmation", 105, 30, null, null, "center");
+      doc.text("Booking Confirmation", 105, 40, null, null, "center");
+      doc.setFont("times", "normal");
+      doc.setFontSize(18);
+      doc.text("EasyStay",20,15)
       // Adding image
       doc.addImage(img, "PNG", 150, 30, 40, 40);
       // Booking details
@@ -102,21 +105,21 @@ export default function BookingWidget({ place }) {
       doc.setTextColor(100);
       doc.text(`(Booked on ${details.bookedOn})`, 140, 18);
       doc.setTextColor(0, 0, 0);
-      doc.text(`Place: ${details.placeTitle}`, 20, 50);
-      doc.text(`Address: ${details.placeAddress}`, 20, 60);
-      doc.text(`Check-in: ${details.checkIn}`, 20, 70);
-      doc.text(`Check-out: ${details.checkOut}`, 20, 80);
+      doc.text(`Place: ${details.placeTitle}`, 20, 60);
+      doc.text(`Address: ${details.placeAddress}`, 20, 70);
+      doc.text(`Check-in: ${details.checkIn}`, 20, 80);
+      doc.text(`Check-out: ${details.checkOut}`, 20, 90);
       doc.text(
         `Guests: ${details.numberOfGuests}, ${differenceInCalendarDays(
-          new Date(booking.checkOut),
-          new Date(booking.checkIn)
+          new Date(details.checkOut),
+          new Date(details.checkIn)
         )} nights`,
         20,
-        90
+        100
       );
-      doc.text(`Name: ${details.name}`, 20, 100);
-      doc.text(`Mobile: ${details.mobile}`, 20, 110);
-      doc.text(`Price paid: Rs.${details.price}`, 20, 120);
+      doc.text(`Name: ${details.name}`, 20, 110);
+      doc.text(`Mobile: ${details.mobile}`, 20, 120);
+      doc.text(`Price paid: Rs.${details.price}`, 20, 130);
 
       doc.save(`booking-${details.bookingId}.pdf`);
     };
@@ -155,7 +158,8 @@ export default function BookingWidget({ place }) {
                 <input
                   type="date"
                   className="font-semibold text-center"
-                  value={checkIn}
+                    value={checkIn}
+                    min={today}
                   onChange={(ev) => setCheckIn(ev.target.value)}
                   required
                 />
@@ -183,11 +187,14 @@ export default function BookingWidget({ place }) {
                   type="number"
                   value={numberOfGuests}
                   onChange={(ev) => {
-                    const value = Number(ev.target.value);
+                    const value = ev.target.value;
                     if (value > place.maxGuests) {
                       toast.error(`Max ${place.maxGuests} guests allowed.`);
-                    } else if (value < 1) {
-                      toast.error(`Minimum 1 guest required.`);
+                      return;
+                    }
+                    else if (value < 0) {
+                      toast.error("Invalid number of guest");
+                      return;
                     } else {
                       setNumberOfGuests(value);
                     }

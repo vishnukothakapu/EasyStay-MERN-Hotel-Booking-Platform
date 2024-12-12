@@ -25,7 +25,10 @@ export default function BookingsPage() {
      img.onload = () => {
        doc.setFontSize(24);
        doc.setFont("helvetica", "bold");
-       doc.text("Booking Confirmation", 105, 30, null, null, "center");
+       doc.text("Booking Confirmation", 105, 33, null, null, "center");
+         doc.setFont("times", "normal");
+         doc.setFontSize(18);
+         doc.text("EasyStay", 20, 15);
        // Adding image
        doc.addImage(img, "PNG", 150, 30, 40, 40);
        // Booking details
